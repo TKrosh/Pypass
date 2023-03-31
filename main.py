@@ -18,7 +18,7 @@ def index():
     p = 'static/data/key.png'
     form = Password_generator()
     if form.validate_on_submit():
-        print('!!!!!')
+        print('!!!!!!')
     return render_template('index.html', title='Авторизация', form=form, png_link=p)
 
 @app.route('/login')
