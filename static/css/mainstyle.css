@@ -35,22 +35,32 @@ body {
 	color: FFF;
 }
 
-.login{
+.profile{
 	position: absolute;
-	font-size: 15px;
-	text-decoration: none;
-	color: #B4B4B4;
 	margin: 15px; 15px;
 	right: 0px;
 	top: 0px;
-	animation: appiar_text 3s;
 }
 
+.login{
+	margin: 15px; 15px;
+	text-decoration: none;
+	color: #B4B4B4;
+}
+
+.regist{
+	margin: 15px; 15px;
+	text-decoration: none;
+	color: #B4B4B4;
+}
+
+.regist:hover{
+	color: #BBBBF1;
+}
 
 .login:hover{
 	color: #BBBBF1;
 }
-
 
 .menu ul li{
 	list-style: none;
@@ -90,4 +100,8 @@ body {
 
 .generatoring_space{
 	text-align: center;
+}
+
+.errors{
+	color: #FF0000;
 }

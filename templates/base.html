@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>{{ title }}</title>
+	<title>Pypass</title>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/mainstyle.css') }}">
 </head>
 
@@ -20,8 +20,13 @@
 				<ul>
 					<li><a href="{{ url_for('View_list') }}">Что-то 1</a></li>
 					<li><a href="{{ url_for('Adding_info') }}">Что-то 2</a></li>
+					<li><a href="{{ url_for('create_pass') }}">Генерация пароля</a></li>
+					
 				</ul>
-				 <a href="{{ url_for('login') }}" class="login">Авторизаяция</a>
+				<div class="profile">
+					<a href="{{ url_for('login') }}" class="login">Авторизаяция</a>
+					<a href="{{ url_for('regist') }}" class="regist">регистрация</a>
+				</div>
 			</div>
 		</div>
 	</div>

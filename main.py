@@ -1,8 +1,9 @@
-from flask import render_template
+from flask import render_template, redirect
 from flask import Flask
-from forms import Password_generator
+from forms import Password_generator, Authorization, Registration
+from wtforms.validators import ValidationError
+from work_func import create_password
 import os
-print("!!")
 
 
 app = Flask(__name__)
@@ -14,16 +15,35 @@ app.config['UPLOAD_FOLDER'] = pic_folder
 
 @app.route('/')
 def index():
-
     p = 'static/data/key.png'
+    return render_template('index.html', title='Авторизация')
+
+@app.route('/create_pass', methods=['GET', 'POST'])
+def create_pass():
+    res = ''
     form = Password_generator()
     if form.validate_on_submit():
-        print('!!!!!!')
-    return render_template('index.html', title='Авторизация', form=form, png_link=p)
+        num = form.numbers.data
+        s_letts = form.letters_small.data
+        b_letts = form.letters_big.data
+        sym = form.symbows.data
+        long = form.password_length.data
+        if any([num, s_letts, b_letts, sym]):
+            res = create_password(num, s_letts, b_letts, sym, long)
+    return render_template('create_password.html', form=form, res=res)
 
 @app.route('/login')
 def login():
-    return render_template('Login.html')
+    form = Authorization()
+    return render_template('Login.html', form=form)
+
+@app.route('/regist', methods=['GET', 'POST'])
+def regist():
+    form = Registration()
+    if form.validate_on_submit():
+        print(form.username.data)
+        return redirect('/')
+    return render_template('regist.html', form=form)
 
 @app.route('/View_list')
 def View_list():

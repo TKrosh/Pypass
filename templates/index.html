@@ -2,21 +2,4 @@
 
 {% block content %}
 <span class="introdaction">***Сайт предназначен для хранение информации об учётных записях. Чтобы получить возможность сохранять и просматривать информацию необходимо авторизираваться. Однако, вы можете воспользоваться функцией генерации паролей***</span>
-
-
-<div class="generatoring_space">
-<form action="" method="post">
-
-    <p>
-        <div class="result_box">{{ form.result_box(class="form-control") }}</div>
-    </p>
-
-    <p>{{ form.numbers() }} {{ form.numbers.label }}</p>
-    <p>{{ form.letters_small() }} {{ form.letters_small.label }}</p>
-    <p>{{ form.letters_big() }} {{ form.letters_big.label }}</p>
-    <p>{{ form.symbows() }} {{ form.symbows.label }}</p>
-
-    <p>{{ form.create(type="submit", class="btn btn-primary") }}</p>
-</form>
-</div>
 {% endblock %}

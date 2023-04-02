@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="" method="post" novalidate>
+
+	{{ form.username.label }}
+	{{ form.username(class="form-control") }}<br>
+
+	{{ form.mail.label }}
+	{{ form.mail(class="form-control", type="mail") }}<br>
+
+	{{ form.password.label }}
+	{{ form.password(class="form-control", type="password") }}<br>
+
+	{{ form.repied_password.label }}
+	{{ form.repied_password(class="form-control", type="password") }}<br>
+
+    	{{ form.submit(type="submit", class="btn") }}</p>
+
+</form> 
+{% endblock %}
