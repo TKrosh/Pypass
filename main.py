@@ -3,6 +3,7 @@ from flask import Flask
 from forms import Password_generator, Authorization, Registration
 from wtforms.validators import ValidationError
 from work_func import create_password
+from data import db_session
 import os
 
 
@@ -32,10 +33,11 @@ def create_pass():
             res = create_password(num, s_letts, b_letts, sym, long)
     return render_template('create_password.html', form=form, res=res)
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = Authorization()
     return render_template('Login.html', form=form)
+
 
 @app.route('/regist', methods=['GET', 'POST'])
 def regist():
@@ -54,4 +56,5 @@ def Adding_info():
     return render_template('adding.html')
 
 if __name__ == '__main__':
+    db_session.global_init("db/passwords.db")
     app.run(port=8080, host='127.0.0.1')
