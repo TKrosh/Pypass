@@ -2,20 +2,32 @@
 
 {% block content %}
 <form action="" method="post" novalidate>
+	{{ form.hidden_tag() }}
 
 	{{ form.username.label }}
-	{{ form.username(class="form-control") }}<br>
+	{{ form.username(class="form-control") }}
+	{% for error in form.username.errors %}
+            <p class="alert alert-danger" role="alert">
+                <div class='errors'>{{ error }}</div>
+            </p>
+        {% endfor %}<br>
 
 	{{ form.mail.label }}
-	{{ form.mail(class="form-control", type="mail") }}<br>
+	{{ form.mail(class="form-control", type="mail") }}
+		{% for error in form.mail.errors %}
+            <p class="alert alert-danger" role="alert">
+                <div class='errors'>{{ error }}</div>
+            </p>
+        {% endfor %}<br>
 
 	{{ form.password.label }}
 	{{ form.password(class="form-control", type="password") }}<br>
 
 	{{ form.repied_password.label }}
 	{{ form.repied_password(class="form-control", type="password") }}<br>
+	<div class='errors'>{{ error }}</div>
 
-    	{{ form.submit(type="submit", class="btn") }}</p>
+	{{ form.submit(type="submit", class="btn btn-primary") }}</p>
 
 </form> 
 {% endblock %}

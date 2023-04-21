@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action="" method="post" novalidate> 
+<form action="" method="post" novalidate>
+	{{ form.hidden_tag() }}
+
 	{{ form.username.label }}
 	{{ form.username(class="form-control") }}<br>
 

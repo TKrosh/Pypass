@@ -17,15 +17,25 @@
 			<a href="{{ url_for('index') }}"><img class="logotip" src="{{ "static/data/key.png" }}" alt="logo"></a>
 			<span class="smallintrodaction">PyKey</span>
 			<div class="menu">
-				<ul>
-					<li><a href="{{ url_for('View_list') }}">Что-то 1</a></li>
-					<li><a href="{{ url_for('Adding_info') }}">Что-то 2</a></li>
-					<li><a href="{{ url_for('create_pass') }}">Генерация пароля</a></li>
-					
-				</ul>
+				{% if Authorizated == 1 %}
+					<ul>
+						<li><a href="{{ url_for('View_list') }}">просмотр записей</a></li>
+						<li><a href="{{ url_for('Adding_info') }}">добавление записей</a></li>
+						<li><a href="{{ url_for('create_pass') }}">Генерация пароля</a></li>
+					</ul>
+				{% else %}
+					<ul>
+						<li><a href="{{ url_for('create_pass') }}">Генерация пароля</a></li>
+					</ul>
+				{% endif %}
 				<div class="profile">
-					<a href="{{ url_for('login') }}" class="login">Авторизаяция</a>
-					<a href="{{ url_for('regist') }}" class="regist">регистрация</a>
+					{% if Authorizated == 1%}
+						<a href="{{ url_for('profile') }}" class="login">{{ username }}</a>
+					{% else %}
+						<a href="{{ url_for('login') }}" class="login">Авторизаяция</a>
+						<a href="{{ url_for('regist') }}" class="regist">регистрация</a>
+
+					{% endif %}
 				</div>
 			</div>
 		</div>

@@ -11,6 +11,8 @@ class User(SqlAlchemyBase):
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     email = sqlalchemy.Column(sqlalchemy.String,
                               index=True, unique=True, nullable=True)
+    remember_me = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
     password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    created_date = sqlalchemy.Column(sqlalchemy.DateTime,
-                                     default=datetime.datetime.now)
+
+    def __repr__(self):
+        return f"'id': {self.id}, 'name': {self.name}, 'email':{self.email}, 'password': {self.password}"

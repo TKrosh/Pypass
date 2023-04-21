@@ -1,7 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<div class="container">	
-		<span class="introdaction">***Add***</span>
-	</div>
+    <form action="" method="post">
+	    {{ form.csrf_token }}
+
+        {{ form.title.label }}
+        {{ form.title(class="form-control") }}<br>
+
+        {{ form.login.label }}
+        {{ form.login(class="form-control") }}<br>
+
+        {{ form.password.label }}
+        {{ form.password(class="form-control") }}<br>
+
+        {{ form.site.label }}
+        {{ form.site(class="form-control") }}<br>
+
+        {{ form.note.label }}
+        {{ form.note(class="form-control") }}<br>
+
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    </form>
+
+
 {% endblock %}
