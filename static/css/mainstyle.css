@@ -55,10 +55,12 @@ body {
 }
 
 .regist:hover{
+    text-decoration: none;
 	color: #BBBBF1;
 }
 
 .login:hover{
+    text-decoration: none;
 	color: #BBBBF1;
 }
 
@@ -72,26 +74,36 @@ body {
 	color:#EBE4D8;
 	margin-left: 10px;
 	margin-right: 10px;
-	margin-top: -31px;
 	display: inline-block;
 	text-decoration: none;
 	width: 12vw;
 	font-size: 20px;
-	height: 35px;
-	padding-top: 30px;
+	height: 50px;
 	cursor: pointer;
-	animation: appiar_text 3s;
+
 }
 
 .menu ul li a:hover{
 	background:#0C0D0C;
 }
 
-.container{
+.container_box{
+    display: block;
 	font-size: 25px;
 	margin: 60px;
 	margin-left: 200px;
 	margin-right: 200px;
+}
+
+.container_right{
+    width: 50%;
+	display:inline-block;
+}
+
+.show_container{
+    width: auto;
+    display:inline-block;
+    transform: translateY(-23vh);
 }
 
 .introdaction{
@@ -104,4 +116,30 @@ body {
 
 .errors{
 	color: #FF0000;
+}
+
+.give_place_to_buttton{
+    display: inline-block;
+    width: 70%;
+}
+
+.search_place{
+    margin-bottom: 30px;
+}
+
+.small_text{
+    font-size: 15px;
+    color: #BBBBF1;
+}
+
+.box{
+    font-size: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#show_info_button{
+    margin-top: -30px;
+    margin-right:20px;
+    float: right;
 }

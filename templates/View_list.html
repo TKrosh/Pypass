@@ -1,10 +1,34 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Записи в блоге</h1>
-{% for item in password%}
-	<div>
-		<h2>{{item.title}}</h2>
-	</div>
-{% endfor %}
+<form action="" method="post" novalidate>
+	{{ form.hidden_tag() }}
+		<div class="container_right">
+			<div class="search_place"><div class="give_place_to_buttton">{{ form.search_field(class="form-control") }}</div>
+			{{ form.search(type="submit", class="btn btn-primary") }}</div>
+				{% for error in form.search_field.errors %}
+					<p class="alert alert-danger" role="alert">
+						<div class='errors'>{{ error }}</div>
+					</p>
+				{% endfor %}
+
+
+			{% for item in password%}
+				<div class="box col-md6 border rounded">
+					<h2>{{ item.title }}</h2>
+					<span class="small_text">{{ item.login }}</span>
+					<a href="{{ url_for('View_list_withinfo', id=item.id) }}" class="btn btn-info" id="show_info_button">просмотр</a>
+				</div>
+			{% endfor %}
+		</div>
+
+		{% if show_info %}
+		<div class="show_container">
+			<div class="information">
+				<h2 class="title">{{ show_info.title }}</h2>
+			</div>
+		</div>
+		{% endif %}
+
+</form>
 {% endblock %}

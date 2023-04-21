@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if Authorizated == 1%}
-        <span>Здравствуйте, {{ username }}</span>
+    {% if current_user.is_authenticated %}
+        <span>Здравствуйте, {{  current_user.name  }}</span>
 	{% else %}
         <span class="introdaction">***Сайт предназначен для хранение информации об учётных записях. Чтобы получить возможность сохранять и просматривать информацию необходимо авторизираваться. Однако, вы можете воспользоваться функцией генерации паролей***</span>
     {% endif %}

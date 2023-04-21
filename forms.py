@@ -42,9 +42,6 @@ class AddInfo(FlaskForm):
 
 
 class ViewInfo(FlaskForm):
-    title = StringField('Заголовок', validators=[DataRequired()])
-    login = StringField('Логин', validators=[DataRequired()])
-    password = StringField('пароль', validators=[DataRequired()])
-    note = StringField('Заметки')
-    site = StringField('Ссылка на сайт (не обязательно)')
-    submit = SubmitField('Сохранить')
+    search_field = StringField(validators=[DataRequired()])
+    search = SubmitField('поиск')
+    show_info_button = SubmitField('просмотр')
