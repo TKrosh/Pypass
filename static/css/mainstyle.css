@@ -103,7 +103,7 @@ body {
 .show_container{
     width: auto;
     display:inline-block;
-    transform: translateY(-23vh);
+    transform: translateY(-32vh);
 }
 
 .introdaction{
