@@ -18,6 +18,11 @@
 
         {{ form.note.label }}
         {{ form.note(class="form-control") }}<br>
+        {% for error in form.note.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <div class='errors'>{{ error }}</div>
+                </div>
+            {% endfor %}
 
         <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     </form>

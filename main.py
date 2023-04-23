@@ -1,5 +1,5 @@
 from flask import render_template, redirect
-from flask import Flask
+from flask import Flask, request
 from forms import Password_generator, Authorization, Registration, Profile, AddInfo, ViewInfo
 from wtforms.validators import ValidationError
 from work_func import create_password, get_user_id
@@ -83,6 +83,7 @@ def regist():
             user.password = user.set_password(form.password.data)
             db_sess.add(user)
             db_sess.commit()
+            login_user(user)
             return redirect('/')
     return render_template('regist.html', form=form, error=error)
 
@@ -92,8 +93,16 @@ def View_list():
     db_sess = db_session.create_session()
     password = db_sess.query(Passwords).filter(Passwords.user_id == current_user.id)
     if form.validate_on_submit():
-        pass
-    return render_template('View_list.html', password=password, form=form, title='!!!!')
+        text = form.search_field.data
+        password = list(db_sess.query(Passwords).filter((Passwords.user_id == current_user.id),
+                                                        (Passwords.title.like(f'%{text.lower()}%')) |
+                                                        (Passwords.title.like(f'%{text.upper()}%'))))
+    if list(password):
+        empty_list = True
+    else:
+        empty_list = False
+    print(list(password), empty_list)
+    return render_template('View_list.html', password=password, form=form, title='!!!!', empty_list=empty_list)
 
 @app.route('/View_list_withinfo/<int:id>', methods=['GET', 'POST'])
 def View_list_withinfo(id):
@@ -102,8 +111,52 @@ def View_list_withinfo(id):
     password = db_sess.query(Passwords).filter(Passwords.user_id == current_user.id)
     show_info = db_sess.query(Passwords).filter(Passwords.id == id).first()
     if form.validate_on_submit():
-        pass
+        text = form.search_field.data
+        password = list(db_sess.query(Passwords).filter((Passwords.user_id == current_user.id),
+                                                        (Passwords.title.like(f'%{text.lower()}%')) |
+                                                        (Passwords.title.like(f'%{text.upper()}%'))))
     return render_template('View_list.html', password=password, form=form, title='!!!!', show_info=show_info)
+
+
+@app.route('/delete_info/<int:id>', methods=['GET', 'POST'])
+def delete_info(id):
+    form = ViewInfo()
+    db_sess = db_session.create_session()
+    db_sess.query(Passwords).filter(Passwords.id == id).delete()
+    db_sess.commit()
+    password = db_sess.query(Passwords).filter(Passwords.user_id == current_user.id)
+    show_info = db_sess.query(Passwords).filter(Passwords.id == id).first()
+    if form.validate_on_submit():
+        text = form.search_field.data
+        password = list(db_sess.query(Passwords).filter((Passwords.user_id == current_user.id),
+                                                        (Passwords.title.like(f'%{text.lower()}%')) |
+                                                        (Passwords.title.like(f'%{text.upper()}%'))))
+    return render_template('View_list.html', password=password, form=form, title='!!!!', show_info=show_info)
+
+
+@app.route('/change_info/<int:id>', methods=['GET', 'POST'])
+def change_info(id):
+    form = AddInfo()
+    db_sess = db_session.create_session()
+    #взять нужную запись
+    somedata = db_sess.query(Passwords).filter(Passwords.id == id).first()
+    #поместить информацию в строки
+    form.title.data = somedata.title
+    form.login.data = somedata.login
+    form.password.data = somedata.password
+    form.site.data = somedata.site
+    form.note.data = somedata.note
+    if form.validate_on_submit():
+        #изменяем данные (запрос задаётся через get, потому что по другому не работает)
+        somedata.title = request.form.get('title')
+        somedata.login = request.form.get('login')
+        somedata.password = request.form.get('password')
+        somedata.site = request.form.get('site')
+        somedata.note = request.form.get('note')
+        db_sess.commit()
+
+        return redirect('/View_list')
+    return render_template('adding.html', form=form)
 
 
 @app.route('/Adding_info', methods=['GET', 'POST'])

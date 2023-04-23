@@ -88,22 +88,45 @@ body {
 }
 
 .container_box{
-    display: block;
 	font-size: 25px;
 	margin: 60px;
 	margin-left: 200px;
 	margin-right: 200px;
 }
 
+.conteriner_view{
+    display:flex;
+}
+
 .container_right{
-    width: 50%;
-	display:inline-block;
+    display:inline-block;
+    min-width: 35vw;
 }
 
 .show_container{
-    width: auto;
+    margin: 50px;
     display:inline-block;
-    transform: translateY(-32vh);
+    flex: 1 0 auto;
+}
+
+.size-control{
+    max-width: 40vw;
+    white-space: normal;
+}
+
+.info.yes_wrap {
+    white-space: normal;
+}
+
+.info{
+    margin-top: 10px;
+}
+
+
+
+.information_title{
+    width: auto;
+    text-align: center;
 }
 
 .introdaction{
@@ -143,3 +166,12 @@ body {
     margin-right:20px;
     float: right;
 }
+
+
+
+#delete_button{
+    margin-left: 50px;
+    margin-top: 24px;
+}
+
+

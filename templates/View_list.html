@@ -3,6 +3,7 @@
 {% block content %}
 <form action="" method="post" novalidate>
 	{{ form.hidden_tag() }}
+	<div class="conteriner_view">
 		<div class="container_right">
 			<div class="search_place"><div class="give_place_to_buttton">{{ form.search_field(class="form-control") }}</div>
 			{{ form.search(type="submit", class="btn btn-primary") }}</div>
@@ -12,23 +13,38 @@
 					</p>
 				{% endfor %}
 
-
-			{% for item in password%}
-				<div class="box col-md6 border rounded">
-					<h2>{{ item.title }}</h2>
-					<span class="small_text">{{ item.login }}</span>
-					<a href="{{ url_for('View_list_withinfo', id=item.id) }}" class="btn btn-info" id="show_info_button">просмотр</a>
-				</div>
-			{% endfor %}
+			{% if empty_list %}
+				{% for item in password%}
+					<div class="box col-md6 border rounded">
+						<h2>{{ item.title }}</h2>
+						<span class="small_text">{{ item.login }}</span>
+						<a href="{{ url_for('View_list_withinfo', id=item.id) }}" class="btn btn-info" id="show_info_button">просмотр</a>
+					</div>
+				{% endfor %}
+			{% else %}
+				<h2> Ничего не найдено </h2>
+			{% endif %}
 		</div>
 
 		{% if show_info %}
 		<div class="show_container">
-			<div class="information">
-				<h2 class="title">{{ show_info.title }}</h2>
+			<div class="information_title">
+				<h2 class="info">{{ show_info.title }}</h2>
 			</div>
+				<div class="size-control">
+					<span class="info yes_wrap">Логин: {{ show_info.login }}</span></br>
+				</div>
+				<span class="info">пароль: {{ show_info.password }}</span></br>
+				{% if show_info.note %}
+				<div class="size-control">
+					<span class="info yes_wrap">Заметки: {{ show_info.note }}</span></br>
+				</div>
+				{% endif %}
+				<a href="{{ url_for('delete_info', id=show_info.id) }}" class="btn btn-danger" id="delete_button">Удалить</a>
+				<a href="{{ url_for('change_info', id=show_info.id) }}" class="btn btn-secondary" id="delete_button">изменить</a>
+
 		</div>
 		{% endif %}
-
+	</div>
 </form>
 {% endblock %}

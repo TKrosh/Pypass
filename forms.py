@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, ValidationError, Optional
-from validators import UniqueUsername, UniqueUsermail, InetegerRequired
+from wtforms.validators import DataRequired, ValidationError, Optional, Length
+from validators import UniqueUsername, UniqueUsermail, InetegerRequired, SpaceRequired
 
 class Password_generator(FlaskForm):
     result_box = StringField()
@@ -33,10 +33,10 @@ class Profile(FlaskForm):
 
 
 class AddInfo(FlaskForm):
-    title = StringField('Заголовок', validators=[DataRequired()])
-    login = StringField('Логин', validators=[DataRequired()])
-    password = StringField('пароль', validators=[DataRequired()])
-    note = StringField('Заметки')
+    title = StringField('Заголовок', validators=[DataRequired(), Length(max=30)])
+    login = StringField('Логин', validators=[DataRequired(), Length(max=40)])
+    password = StringField('пароль', validators=[DataRequired(), Length(max=40)])
+    note = StringField('Заметки', validators=[SpaceRequired])
     site = StringField('Ссылка на сайт (не обязательно)')
     submit = SubmitField('Сохранить')
 
