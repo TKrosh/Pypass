@@ -15,6 +15,12 @@
 
         {{ form.site.label }}
         {{ form.site(class="form-control") }}<br>
+        {% for error in form.site.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <div class='errors'>{{ error }}</div>
+                </div>
+        {% endfor %}
+        <div class='errors'>{{ error }}</div>
 
         {{ form.note.label }}
         {{ form.note(class="form-control") }}<br>
@@ -22,7 +28,7 @@
                 <div class="alert alert-danger" role="alert">
                     <div class='errors'>{{ error }}</div>
                 </div>
-            {% endfor %}
+        {% endfor %}
 
         <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     </form>

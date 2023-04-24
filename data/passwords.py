@@ -3,6 +3,7 @@ import sqlalchemy
 from .db_session import SqlAlchemyBase
 
 
+
 class Passwords(SqlAlchemyBase):
     __tablename__ = 'password'
 

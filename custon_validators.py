@@ -2,6 +2,7 @@ from wtforms.validators import DataRequired, ValidationError
 from data import db_session
 from data.user import User
 from flask import Flask, request
+import validators
 
 def InetegerRequired(form, password_length):
     if not form.password_length.data.isdigit():
@@ -32,4 +33,9 @@ def SpaceRequired(form, note):
 def AsymRequired(form, mail):
     if '@' not in form.mail.data:
         raise ValidationError("Электронная почта должна включать в себя символ '@'")
+
+def RealLinkRequired(form, site):
+    link = form.site.data
+    if not validators.url(link) and link:
+        raise ValidationError("Укажите настоящую ссылку на сайт")
 

@@ -7,13 +7,14 @@ from data import db_session
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from data.user import User
 from data.passwords import Passwords
+import validators
+from cryptography.fernet import Fernet
 import os
 
 
 app = Flask(__name__)
-
 app.config['SECRET_KEY'] = 'project_secret_key'
-
+fernet = Fernet(b'o47K4w3jYCHsezSn_k2EAhnJGMpV8YKhWBmDzcsLNSA=')
 pic_folder = os.path.join('data')
 app.config['UPLOAD_FOLDER'] = pic_folder
 
@@ -106,13 +107,15 @@ def View_list_withinfo(id):
     db_sess = db_session.create_session()
     password = db_sess.query(Passwords).filter(Passwords.user_id == current_user.id)
     show_info = db_sess.query(Passwords).filter(Passwords.id == id).first()
+    show_pass = fernet.decrypt(show_info.password).decode()
     if form.validate_on_submit():
         text = form.search_field.data
         password = list(db_sess.query(Passwords).filter((Passwords.user_id == current_user.id),
                                                         (Passwords.title.like(f'%{text.lower()}%')) |
                                                         (Passwords.title.like(f'%{text.upper()}%'))))
     empty_list = empty_check(list(password))
-    return render_template('View_list.html', password=password, form=form, title='!!!!', show_info=show_info, empty_list=empty_list)
+    return render_template('View_list.html', password=password, form=form, title='!!!!',
+                           show_info=show_info, empty_list=empty_list, show_pass=show_pass)
 
 
 @app.route('/delete_info/<int:id>', methods=['GET', 'POST'])
@@ -135,6 +138,7 @@ def delete_info(id):
 
 @app.route('/change_info/<int:id>', methods=['GET', 'POST'])
 def change_info(id):
+    error = ''
     form = AddInfo()
     db_sess = db_session.create_session()
     #взять нужную запись
@@ -142,20 +146,23 @@ def change_info(id):
     #поместить информацию в строки
     form.title.data = somedata.title
     form.login.data = somedata.login
-    form.password.data = somedata.password
+    form.password.data = fernet.decrypt(somedata.password).decode()
     form.site.data = somedata.site
     form.note.data = somedata.note
     if form.validate_on_submit():
-        #изменяем данные (запрос задаётся через get, потому что по другому не работает)
-        somedata.title = request.form.get('title')
-        somedata.login = request.form.get('login')
-        somedata.password = request.form.get('password')
-        somedata.site = request.form.get('site')
-        somedata.note = request.form.get('note')
-        db_sess.commit()
-
-        return redirect('/View_list')
-    return render_template('adding.html', form=form)
+        link = request.form.get('site')
+        if not validators.url(link) and link:
+            error = "Укажите настоящую ссылку на сайт"
+        else:
+            #изменяем данные (запрос задаётся через get, потому что по другому не работает)
+            somedata.title = request.form.get('title')
+            somedata.login = request.form.get('login')
+            somedata.password = fernet.encrypt(request.form.get('password').encode())
+            somedata.site = link
+            somedata.note = request.form.get('note')
+            db_sess.commit()
+            return redirect('/View_list')
+    return render_template('adding.html', form=form, error=error)
 
 
 @app.route('/Adding_info', methods=['GET', 'POST'])
@@ -166,7 +173,7 @@ def Adding_info():
             title = form.title.data,
             login = form.login.data,
             user_id = current_user.id,
-            password = form.password.data,
+            password = fernet.encrypt(form.password.data.encode()),
             site = form.site.data,
             note = form.note.data
         )

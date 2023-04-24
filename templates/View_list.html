@@ -28,21 +28,25 @@
 
 		{% if show_info %}
 		<div class="show_container">
-			<div class="information_title">
-				<h2 class="info">{{ show_info.title }}</h2>
-			</div>
+				<div class="information_title">
+					<h2 class="info">{{ show_info.title }}</h2>
+				</div>
+
 				<div class="size-control">
 					<span class="info yes_wrap">Логин: {{ show_info.login }}</span></br>
 				</div>
-				<span class="info">пароль: {{ show_info.password }}</span></br>
+
+				<span class="info">пароль: {{ show_pass }}</span></br>
 				{% if show_info.note %}
 				<div class="size-control">
 					<span class="info yes_wrap">Заметки: {{ show_info.note }}</span></br>
 				</div>
 				{% endif %}
 				<a href="{{ url_for('delete_info', id=show_info.id) }}" class="btn btn-danger" id="delete_button">Удалить</a>
-				<a href="{{ url_for('change_info', id=show_info.id) }}" class="btn btn-secondary" id="delete_button">изменить</a>
-
+				<a href="{{ url_for('change_info', id=show_info.id) }}" class="btn btn-success" id="delete_button">изменить</a>
+				{% if show_info.site %}
+					<a href="{{ show_info.site }}" class="btn btn-secondary" id="delete_button">перейти</a>
+				{% endif %}
 		</div>
 		{% endif %}
 	</div>
