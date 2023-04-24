@@ -3,15 +3,6 @@ from data import db_session
 from data.user import User
 from flask import Flask, request
 
-def MaterialRequired(form, numbers, letters_small, letters_big, symbows):
-    num = form.numbers.data
-    s_letts = form.letters_small.data
-    b_letts = form.letters_big.data
-    sym = form.symbows.data
-    if not any([num, s_letts, b_letts, sym]):
-        raise ValidationError("Укажите из чего должен состоять пароль")
-
-
 def InetegerRequired(form, password_length):
     if not form.password_length.data.isdigit():
         raise ValidationError("Не верное значение длины пароля")
@@ -37,4 +28,8 @@ def SpaceRequired(form, note):
     print(space_count)
     if letters_amount // space_count > 35:
         raise ValidationError("слишком мало пробелов(это вызовет проблемы с чтение записи, каждые 35 символов)")
+
+def AsymRequired(form, mail):
+    if '@' not in form.mail.data:
+        raise ValidationError("Электронная почта должна включать в себя символ '@'")
 

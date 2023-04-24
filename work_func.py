@@ -25,9 +25,10 @@ def create_password(num, s_let, b_let, sym, long):
         result += materials[randint(0, len(materials) - 1)]
     return result
 
-
-def get_user_id(login, password):
-    db_sess = db_session.create_session()
-    db_answear = db_sess.query(User.id).filter((User.name == login)
-                                            and (User.password == password))
-    return db_answear[0][0]
+def empty_check(some_list):
+    #функция нужна, чтобы сраница просмотра не была пустой,
+    #в случае если у пользователя нет записей
+    if some_list:
+        return True
+    else:
+        return False

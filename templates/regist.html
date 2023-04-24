@@ -21,7 +21,12 @@
         {% endfor %}<br>
 
 	{{ form.password.label }}
-	{{ form.password(class="form-control", type="password") }}<br>
+	{{ form.password(class="form-control", type="password") }}
+	{% for error in form.password.errors %}
+            <p class="alert alert-danger" role="alert">
+                <div class='errors'>{{ error }}</div>
+            </p>
+        {% endfor %}<br>
 
 	{{ form.repied_password.label }}
 	{{ form.repied_password(class="form-control", type="password") }}<br>

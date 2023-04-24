@@ -2,7 +2,7 @@ from flask import render_template, redirect
 from flask import Flask, request
 from forms import Password_generator, Authorization, Registration, Profile, AddInfo, ViewInfo
 from wtforms.validators import ValidationError
-from work_func import create_password, get_user_id
+from work_func import create_password, empty_check
 from data import db_session
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from data.user import User
@@ -97,11 +97,7 @@ def View_list():
         password = list(db_sess.query(Passwords).filter((Passwords.user_id == current_user.id),
                                                         (Passwords.title.like(f'%{text.lower()}%')) |
                                                         (Passwords.title.like(f'%{text.upper()}%'))))
-    if list(password):
-        empty_list = True
-    else:
-        empty_list = False
-    print(list(password), empty_list)
+    empty_list = empty_check(list(password))
     return render_template('View_list.html', password=password, form=form, title='!!!!', empty_list=empty_list)
 
 @app.route('/View_list_withinfo/<int:id>', methods=['GET', 'POST'])
@@ -115,7 +111,8 @@ def View_list_withinfo(id):
         password = list(db_sess.query(Passwords).filter((Passwords.user_id == current_user.id),
                                                         (Passwords.title.like(f'%{text.lower()}%')) |
                                                         (Passwords.title.like(f'%{text.upper()}%'))))
-    return render_template('View_list.html', password=password, form=form, title='!!!!', show_info=show_info)
+    empty_list = empty_check(list(password))
+    return render_template('View_list.html', password=password, form=form, title='!!!!', show_info=show_info, empty_list=empty_list)
 
 
 @app.route('/delete_info/<int:id>', methods=['GET', 'POST'])
@@ -131,7 +128,9 @@ def delete_info(id):
         password = list(db_sess.query(Passwords).filter((Passwords.user_id == current_user.id),
                                                         (Passwords.title.like(f'%{text.lower()}%')) |
                                                         (Passwords.title.like(f'%{text.upper()}%'))))
-    return render_template('View_list.html', password=password, form=form, title='!!!!', show_info=show_info)
+    empty_list = empty_check(list(password))
+    return render_template('View_list.html', password=password, form=form, title='!!!!',
+                           show_info=show_info, empty_list=empty_list)
 
 
 @app.route('/change_info/<int:id>', methods=['GET', 'POST'])

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, Optional, Length
-from validators import UniqueUsername, UniqueUsermail, InetegerRequired, SpaceRequired
+from validators import UniqueUsername, UniqueUsermail, InetegerRequired, SpaceRequired, AsymRequired
 
 class Password_generator(FlaskForm):
     result_box = StringField()
@@ -9,7 +9,7 @@ class Password_generator(FlaskForm):
     letters_small = BooleanField('Использовать строчны букви (Латинские)')
     letters_big = BooleanField('Использовать заглавные букви (Латинские)')
     symbows = BooleanField('Использовать спец. символы (!?#$%)')
-    password_length = StringField('Длина пароля', validators=[DataRequired(), InetegerRequired])
+    password_length = StringField('Длина пароля', validators=[DataRequired(), InetegerRequired, Length(max=2)])
     create = SubmitField('Сгенерировать')
 
 
@@ -22,8 +22,8 @@ class Authorization(FlaskForm):
 
 class Registration(FlaskForm):
     username = StringField('Логин:  ', validators=[DataRequired(), UniqueUsername])
-    mail = StringField('почта:  ', validators=[DataRequired(), UniqueUsermail])
-    password = StringField('Пароль:  ', validators=[DataRequired()])
+    mail = StringField('почта:  ', validators=[DataRequired(), UniqueUsermail, AsymRequired])
+    password = StringField('Пароль:  ', validators=[DataRequired(), Length(min=5)])
     repied_password = StringField('Повторите пароль:  ', validators=[DataRequired()])
     submit = SubmitField('зарегистрироваться')
 
