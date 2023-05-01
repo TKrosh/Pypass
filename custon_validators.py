@@ -19,7 +19,7 @@ def UniqueUsername(form, username):
 
 def UniqueUsermail(form, mail):
     db_sess = db_session.create_session()
-    db_answear = list(db_sess.query(User).filter(User.name == form.mail.data))
+    db_answear = list(db_sess.query(User).filter(User.email == form.mail.data))
     if db_answear:
         raise ValidationError("Это почта уже занята")
 

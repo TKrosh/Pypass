@@ -4,7 +4,6 @@ from data.user import User
 import smtplib
 from email.mime.text import MIMEText
 def send_mail(massage, recipient, theme):
-    print('!!!!')
     sender = "passpythonpasspython2023@gmail.com"
     password = "snjicoltzsrxzjrk"
 
