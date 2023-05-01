@@ -25,7 +25,8 @@
 	</p>
 
 	<p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}
+    {{ form.forgot_pass(type="submit", class="btn btn-danger", formnovalidate=True) }}</p>
     <div class='errors'>{{ error }}</div>
 </form> 
 {% endblock %}

@@ -1,8 +1,9 @@
 from flask import render_template, redirect
 from flask import Flask, request
-from forms import Password_generator, Authorization, Registration, Profile, AddInfo, ViewInfo
+from forms import Password_generator, Authorization, Registration, Profile, AddInfo, ViewInfo, \
+    ForgotPass, Create_new_password
 from wtforms.validators import ValidationError
-from work_func import create_password, empty_check
+from work_func import create_password, empty_check, send_mail
 from data import db_session
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from data.user import User
@@ -50,15 +51,72 @@ def create_pass():
 def login():
     form = Authorization()
     error = ''
-    if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        db_answear = db_sess.query(User).filter(User.name == form.username.data).first()
+    user_name = form.username.data
+    db_sess = db_session.create_session()
+    if form.forgot_pass.data:
+        db_answear = db_sess.query(User.id).filter(User.name == user_name).first()
+        if db_answear:
+            return redirect(f'/new_pass/{db_answear[0]}')
+        else:
+            error = "Пользователь с таким логином не зарегистрирован"
+
+    elif form.validate_on_submit():
+        db_answear = db_sess.query(User).filter(User.name == user_name).first()
         if db_answear and db_answear.check_password(form.password.data):
             login_user(db_answear, remember=form.remember_me.data)
             return redirect('/')
         else:
             error = 'неверный логин или пароль'
+
     return render_template('Login.html', form=form, error=error)
+
+@app.route('/new_pass/<int:id>', methods=['GET', 'POST'])
+def new_pass(id):
+    db_sess = db_session.create_session()
+    error = ''
+    mail = somedata = db_sess.query(User.email).filter(User.id == id).first()[0]
+    encrypt_code = db_sess.query(User.reset_code).filter(User.id == id).first()[0]
+    if encrypt_code:
+        code_sended = True
+    else:
+        code_sended = False
+    form = ForgotPass()
+    if form.send_code.data:
+        code_sended = True
+        code = create_password(1, 0, 1, 0, 6)
+        somedata = db_sess.query(User).filter(User.id == id).first()
+        somedata.reset_code = fernet.encrypt(code.encode())
+        db_sess.commit()
+        send_mail(code, mail, 'Код востановления пароля')
+    elif form.reset.data and form.code_field.data:
+        encrypt_code = db_sess.query(User.reset_code).filter(User.id == id).first()[0]
+        code = fernet.decrypt(encrypt_code).decode()
+        if form.code_field.data == code and code:
+            somedata = db_sess.query(User).filter(User.id == id).first()
+            somedata.reset_code = ''
+            db_sess.commit()
+            return redirect(f'/reset_pass/{id}')
+        else:
+            error = 'Неверный код'
+    return render_template('new_pass.html', title='Авторизация', form=form, code_sended=code_sended,
+                           mail=mail, error=error)
+
+@app.route('/reset_pass/<int:id>', methods=['GET', 'POST'])
+def reset_pass(id):
+    form = Create_new_password()
+    error = ''
+    if form.validate_on_submit():
+        if form.new_pass.data != form.rep_new_pass.data:
+            error = 'пароли не совпадают'
+        else:
+            user = User()
+            db_sess = db_session.create_session()
+            somedata = db_sess.query(User).filter(User.id == id).first()
+            somedata.password = user.set_password(form.new_pass.data)
+            db_sess.commit()
+            return redirect('/')
+    return render_template('new_password.html', form=form, error=error)
+
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():

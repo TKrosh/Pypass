@@ -1,6 +1,24 @@
 from random import randint
 from data import db_session
 from data.user import User
+import smtplib
+from email.mime.text import MIMEText
+def send_mail(massage, recipient, theme):
+    print('!!!!')
+    sender = "passpythonpasspython2023@gmail.com"
+    password = "snjicoltzsrxzjrk"
+
+    server = smtplib.SMTP("smtp.gmail.com", 587)
+    server.starttls()
+
+    try:
+        server.login(sender, password)
+        msg = MIMEText(massage)
+        msg["Subject"] = theme
+        server.sendmail(sender, recipient, msg.as_string())
+        return "OK"
+    except Exception as _ex:
+        return f'{_ex} PROBLEMS'
 
 def create_password(num, s_let, b_let, sym, long):
     numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']

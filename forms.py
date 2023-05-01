@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, Optional, Length
 from custon_validators import UniqueUsername, UniqueUsermail, InetegerRequired, \
-    SpaceRequired, AsymRequired, RealLinkRequired
+    SpaceRequired, AsymRequired, RealLinkRequired, RealEmailRequired
 
 class Password_generator(FlaskForm):
     result_box = StringField('Результат:')
@@ -19,11 +19,12 @@ class Authorization(FlaskForm):
     password = StringField("Пароль", validators=[DataRequired()])
     remember_me = BooleanField('запомнить меня')
     submit = SubmitField('войти')
+    forgot_pass = SubmitField('Забыли пароль')
 
 
 class Registration(FlaskForm):
     username = StringField('Логин:  ', validators=[DataRequired(), UniqueUsername])
-    mail = StringField('почта:  ', validators=[DataRequired(), UniqueUsermail, AsymRequired])
+    mail = StringField('почта:  ', validators=[DataRequired(), UniqueUsermail, AsymRequired, RealEmailRequired])
     password = StringField('Пароль:  ', validators=[DataRequired(), Length(min=5)])
     repied_password = StringField('Повторите пароль:  ', validators=[DataRequired()])
     submit = SubmitField('зарегистрироваться')
@@ -46,3 +47,14 @@ class ViewInfo(FlaskForm):
     search_field = StringField(validators=[DataRequired()])
     search = SubmitField('поиск')
     show_info_button = SubmitField('просмотр')
+
+
+class ForgotPass(FlaskForm):
+    send_code = SubmitField('отправить код на электронную почту')
+    code_field = StringField('введите код')
+    reset = SubmitField('сбросить пароль')
+
+class Create_new_password(FlaskForm):
+    new_pass = StringField('Введите новый пароль', validators=[DataRequired()])
+    rep_new_pass = StringField('подтвердите новый пароль', validators=[DataRequired()])
+    done = SubmitField('утвердить новый пароль')
